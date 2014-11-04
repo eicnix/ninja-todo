@@ -33,8 +33,10 @@ public class Routes implements ApplicationRoutes {
         router.GET().route("/hello_world.json").with(ApplicationController.class, "helloWorldJson");
 
         router.GET().route("/task/").with(TaskController.class, "index");
+        router.GET().route("/task").with(TaskController.class, "index");
         router.GET().route("/task/api").with(TaskController.class, "listTasks");
         router.PUT().route("/task/api").with(TaskController.class, "saveTask");
+        router.DELETE().route("/task/api/{id}").with(TaskController.class, "deleteTask");
 
         ///////////////////////////////////////////////////////////////////////
         // Assets (pictures / javascript)

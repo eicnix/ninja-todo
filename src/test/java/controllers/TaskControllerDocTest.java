@@ -31,15 +31,7 @@ public class TaskControllerDocTest extends NinjaDocTester {
 
     @Test
     public void saveAndRetrieveTask() throws Exception {
-        Task task = new Task();
-        task.setName("Test");
-        makeRequest(
-                Request.PUT().url(
-                        testServerUrl().path(URL_INDEX)
-                ).payload(task)
-                .contentTypeApplicationJson()
-        );
-
+        addTask("Test");
         Response response = makeRequest(
                 Request.GET().url(
                         testServerUrl().path(URL_INDEX)
@@ -48,16 +40,22 @@ public class TaskControllerDocTest extends NinjaDocTester {
         assertThat(response.payload).contains("Test");
     }
 
+    private Task addTask(String name) {
+        Task task = new Task();
+        task.setName(name);
+        Response response = makeRequest(
+                Request.PUT().url(
+                        testServerUrl().path(URL_INDEX)
+                ).payload(task)
+                        .contentTypeApplicationJson()
+        );
+        return response.payloadAs(Task.class);
+    }
+
     @Test
     public void saveMultipleTask() throws Exception {
-        Task task = new Task();
         for (int i = 0; i < 5; i++) {
-            task.setName("Test_" + i);
-            makeRequest(
-                    Request.PUT().url(
-                            testServerUrl().path(URL_INDEX)
-                    ).payload(task)
-                            .contentTypeApplicationJson());
+            addTask("Test_" + i);
         }
 
         Response response = sayAndMakeRequest(
@@ -66,5 +64,17 @@ public class TaskControllerDocTest extends NinjaDocTester {
                 )
         );
         assertThat(response.payloadJsonAs(List.class)).hasSize(5);
+    }
+
+    @Test
+    public void deleteTask() throws Exception {
+        Task task = addTask("Test");
+
+        Response response = sayAndMakeRequest(
+                Request.DELETE().url(
+                        testServerUrl().path(URL_INDEX + "/" + task.getId())
+                )
+        );
+        assertThat(response.httpStatus).isEqualTo(200);
     }
 }

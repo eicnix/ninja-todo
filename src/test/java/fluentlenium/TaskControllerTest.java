@@ -1,4 +1,4 @@
-package fluentium;
+package fluentlenium;
 
 import com.gargoylesoftware.htmlunit.BrowserVersion;
 import com.gargoylesoftware.htmlunit.WebClient;
@@ -9,6 +9,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 
 import java.util.concurrent.TimeUnit;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author leichler
@@ -22,14 +24,27 @@ public class TaskControllerTest extends NinjaFluentLeniumTest {
 
     @Test
     public void addTask() throws Exception {
-        find(".task-input").text("Test2");
+        addTaskOnSite("Test");
+        assertThat(find("td b").first().getText()).isEqualTo("Test");
+    }
+
+    private void addTaskOnSite(String name) {
+        find(".task-input").text(name);
         click(".add-button");
-        await().atMost(5, TimeUnit.SECONDS).until("td b").hasText("Test2");
+        await().atMost(5, TimeUnit.SECONDS).until("td b").hasText(name);
+    }
+
+    @Test
+    public void deleteTask() throws Exception {
+        addTaskOnSite("Test");
+        click(".delete-button");
+        Thread.sleep(2000);
+        await().atMost(5, TimeUnit.SECONDS).until("tr").hasSize(0);
     }
 
     @Override
     public WebDriver getDefaultDriver() {
-        return new HtmlUnitDriver(BrowserVersion.CHROME){
+        webDriver =  new HtmlUnitDriver(BrowserVersion.FIREFOX_17) {
             @Override
             protected WebClient modifyWebClient(WebClient client) {
                 if (client == null) {
@@ -40,5 +55,6 @@ public class TaskControllerTest extends NinjaFluentLeniumTest {
                 return client;
             }
         };
+        return webDriver;
     }
 }

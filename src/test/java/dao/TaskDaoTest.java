@@ -72,4 +72,13 @@ public class TaskDaoTest {
         }
         assertThat(dao.getAll()).hasSize(5);
     }
+
+    @Test
+    public void delete() throws Exception {
+        Task task = new Task();
+        dao.save(task);
+        dao.delete(task.getId());
+
+        assertThat(dao.get(task.getId())).isNull();
+    }
 }

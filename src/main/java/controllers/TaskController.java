@@ -6,6 +6,8 @@ import dao.TaskDao;
 import model.Task;
 import ninja.Result;
 import ninja.Results;
+import ninja.params.PathParam;
+import org.bson.types.ObjectId;
 
 /**
  * @author leichler
@@ -22,7 +24,7 @@ public class TaskController {
     }
 
     public Result index() {
-        return Results.json().html().template("/views/MessageController/index.html");
+        return Results.ok().html().template("/views/TaskController/index.html");
     }
 
     public Result saveTask(Task task) {
@@ -32,5 +34,10 @@ public class TaskController {
 
     public Result listTasks() {
         return Results.json().render(dao.getAll());
+    }
+
+    public Result deleteTask(@PathParam("id") String id) {
+        dao.delete(new ObjectId(id));
+        return Results.json().render("success");
     }
 }

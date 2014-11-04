@@ -37,6 +37,10 @@ public class TaskDao {
     }
 
     public List<Task> getAll() {
-        return ds.find(Task.class).asList();
+        return ds.find(clazz).asList();
+    }
+
+    public void delete(ObjectId objectId) {
+        ds.delete(clazz, objectId);
     }
 }

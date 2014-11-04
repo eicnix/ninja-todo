@@ -1,5 +1,9 @@
 package model;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import json.ObjectIdDeSerializer;
+import json.ObjectIdSerializer;
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
@@ -12,6 +16,8 @@ import org.mongodb.morphia.annotations.Id;
 public class Task {
 
     @Id
+    @JsonSerialize(using = ObjectIdSerializer.class)
+    @JsonDeserialize(using = ObjectIdDeSerializer.class)
     private ObjectId id;
 
     private String name;
