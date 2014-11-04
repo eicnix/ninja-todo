@@ -9,14 +9,14 @@ import org.mongodb.morphia.annotations.Id;
  */
 
 @Entity
-public class Todo {
+public class Task {
 
     @Id
     private ObjectId id;
 
     private String name;
 
-    private boolean completed;
+    private boolean complete;
 
     public String getName() {
         return name;
@@ -34,11 +34,11 @@ public class Todo {
         this.id = id;
     }
 
-    public boolean isCompleted() {
-        return completed;
+    public boolean isComplete() {
+        return complete;
     }
 
-    public void setCompleted(boolean completed) {
-        this.completed = completed;
+    public void setComplete(boolean complete) {
+        this.complete = complete;
     }
 }

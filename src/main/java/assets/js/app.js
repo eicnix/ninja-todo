@@ -1,35 +1,35 @@
 var TodoApp = angular.module("TodoApp", ["ngResource", "ngRoute"]).
     config(function ($routeProvider) {
         "use strict";
-        $routeProvider.when('/', {controller: TodoCtrl, templateUrl: 'index.html'});
+        $routeProvider.when('/task', {controller: TodoCtrl, templateUrl: 'index.html'});
     });
 TodoApp.factory('Todo', function ($resource) {
     "use strict";
-    return $resource('/message/api', {}, { update: { method: 'PUT' }, query: {
-        method: 'GET',
-        isArray: false
-    } });
+    return $resource(
+        '/task/api',
+        {},
+        {
+            'update': { method: 'PUT' },
+            'query': { method: 'GET', isArray: true}
+        }
+    );
 });
 
 var TodoCtrl = function($scope, Todo) {
     "use strict";
     $scope.action = "Add";
-    $scope.Todos = Todo.get();
+    $scope.Todos = Todo.query();
     $scope.addMenuItem = function () {
         $scope.todo.complete = false;
-        Todo.save($scope.todo, function (data) {
-            $scope.Todos.record.push(data);
+        Todo.update($scope.todo, function (data) {
+            $scope.Todos.push(data);
             $scope.todo = {};
         });
     };
     $scope.updateItem = function() {
         var todo = this.todo;
 
-        if(this.todo.complete === false) {
-            this.todo.complete = true;
-        } else {
-            this.todo.complete = false;
-        }
+        todo.complete = todo.complete === false;
         $('#item_' + todo.id).toggleClass('strike');
         Todo.update({id: todo.id}, todo, function () {
             updateByAttr($scope.Todos.record, 'id', todo.id, todo)

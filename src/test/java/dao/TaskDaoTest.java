@@ -1,7 +1,7 @@
 package dao;
 
 import com.github.fakemongo.junit.FongoRule;
-import model.Todo;
+import model.Task;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -15,26 +15,26 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * @author leichler
  */
-public class TodoDaoTest {
+public class TaskDaoTest {
 
     @Rule
     public FongoRule fongoRule = new FongoRule();
 
-    private TodoDao dao;
+    private TaskDao dao;
 
 
     @Before
     public void setUp() throws Exception {
         String dbName = UUID.randomUUID().toString();
         Morphia morphia = new Morphia();
-        morphia.map(Todo.class);
+        morphia.map(Task.class);
         Datastore ds = morphia.createDatastore(fongoRule.getFongo().getMongo(), dbName);
-        dao = new TodoDao(ds);
+        dao = new TaskDao(ds);
     }
 
     @Test
     public void save() throws Exception {
-        dao.save(new Todo());
+        dao.save(new Task());
         assertThat(dao.getCount()).isEqualTo(1);
     }
 
@@ -45,21 +45,31 @@ public class TodoDaoTest {
 
     @Test
     public void getWithObjectId() throws Exception {
-        Todo todo = new Todo();
-        todo.setName("Test");
+        Task task = new Task();
+        task.setName("Test");
 
-        dao.save(todo);
-        Todo todo2 = dao.get(todo.getId());
-        assertThat(todo2.getName()).isEqualTo(todo.getName());
+        dao.save(task);
+        Task task2 = dao.get(task.getId());
+        assertThat(task2.getName()).isEqualTo(task.getName());
     }
 
     @Test
     public void getWithObject() throws Exception {
-        Todo todo = new Todo();
-        todo.setName("Test");
+        Task task = new Task();
+        task.setName("Test");
 
-        dao.save(todo);
-        Todo todo2 = dao.get(todo);
-        assertThat(todo2.getName()).isEqualTo(todo.getName());
+        dao.save(task);
+        Task task2 = dao.get(task);
+        assertThat(task2.getName()).isEqualTo(task.getName());
+    }
+
+    @Test
+    public void getAll() throws Exception {
+        for (int i = 0; i < 5; i++) {
+            Task task = new Task();
+            task.setName("Test_"+i);
+            dao.save(task);
+        }
+        assertThat(dao.getAll()).hasSize(5);
     }
 }

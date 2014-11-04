@@ -18,6 +18,7 @@ package conf;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
+import dao.TaskDao;
 import org.mongodb.morphia.Datastore;
 
 @Singleton
@@ -25,5 +26,6 @@ public class Module extends AbstractModule {
 
     protected void configure() {
         bind(Datastore.class).toProvider(DatastoreProvider.class);
+        bind(TaskDao.class);
     }
 }

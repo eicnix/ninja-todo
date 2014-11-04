@@ -10,6 +10,9 @@ import org.mongodb.morphia.Morphia;
 
 import java.util.UUID;
 
+/**
+ * @author leichler
+ */
 public class DatastoreProvider implements Provider<Datastore> {
 
     private static final String MORPHIA_PACKAGE = "ninja.morphia.package";
@@ -38,4 +41,5 @@ public class DatastoreProvider implements Provider<Datastore> {
         return morphia.createDatastore(fongo.getMongo(), dbName);
     }
 }
+
 

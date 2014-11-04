@@ -18,11 +18,12 @@ package conf;
 
 
 import controllers.ApplicationController;
-import controllers.MessageController;
+import controllers.TaskController;
 import ninja.AssetsController;
 import ninja.Router;
 import ninja.application.ApplicationRoutes;
 
+@SuppressWarnings("UnusedDeclaration")
 public class Routes implements ApplicationRoutes {
 
     @Override
@@ -31,12 +32,13 @@ public class Routes implements ApplicationRoutes {
         router.GET().route("/").with(ApplicationController.class, "index");
         router.GET().route("/hello_world.json").with(ApplicationController.class, "helloWorldJson");
 
-        router.GET().route("/message/api").with(MessageController.class, "listTodos");
-        router.PUT().route("/message/api").with(MessageController.class, "saveTodo");
+        router.GET().route("/task/").with(TaskController.class, "index");
+        router.GET().route("/task/api").with(TaskController.class, "listTasks");
+        router.PUT().route("/task/api").with(TaskController.class, "saveTask");
 
         ///////////////////////////////////////////////////////////////////////
         // Assets (pictures / javascript)
-        ///////////////////////////////////////////////////////////////////////    
+        ///////////////////////////////////////////////////////////////////////
         router.GET().route("/assets/webjars/{fileName: .*}").with(AssetsController.class, "serveWebJars");
         router.GET().route("/assets/{fileName: .*}").with(AssetsController.class, "serveStatic");
         

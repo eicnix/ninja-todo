@@ -1,20 +1,22 @@
 package dao;
 
 import com.google.inject.Inject;
-import model.Todo;
+import model.Task;
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.Datastore;
+
+import java.util.List;
 
 /**
  * @author leichler
  */
-public class TodoDao {
+public class TaskDao {
 
     private Datastore ds;
-    private Class<Todo> clazz = Todo.class;
+    private Class<Task> clazz = Task.class;
 
     @Inject
-    public TodoDao(Datastore ds) {
+    public TaskDao(Datastore ds) {
         this.ds = ds;
     }
 
@@ -26,11 +28,15 @@ public class TodoDao {
         return ds.getCount(clazz);
     }
 
-    public Todo get(Todo todo) {
-        return ds.get(todo);
+    public Task get(Task task) {
+        return ds.get(task);
     }
 
-    public Todo get(ObjectId id) {
+    public Task get(ObjectId id) {
         return ds.get(clazz, id);
+    }
+
+    public List<Task> getAll() {
+        return ds.find(Task.class).asList();
     }
 }

@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html ng-app="TodoApp">
+<html  id="ng-app" class="ng-app: TodoApp;">
 <head>
-    <link href="style.css" rel="stylesheet">
+    <link href="style.css" type="text/css" rel="stylesheet">
     <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
     <link href="//netdna.bootstrapcdn.com/font-awesome/3.0.2/css/font-awesome.css" rel="stylesheet">
-    <meta name="viewport" name="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 </head>
 
 <body ng-controller="TodoCtrl">
@@ -13,15 +13,15 @@
 
     <div id="list-container">
         <table class="table table-hover table-striped table-bordered todolist">
-            <tr ng-repeat="todo in Todos.record" id="row_{{todo.id}}">
+            <tr ng-repeat="todo in Todos" id="row_{{todo.id}}">
                 <td><a ng-click="deleteItem()"><i class="icon icon-minus-sign"></i></a></td>
                 <td ng-class="{strike:todo.complete}" id="item_{{todo.id}}" style="width:100%" ng-click="updateItem()"><b>{{todo.name}}</b></td>
             </tr>
         </table>
     </div>
-    <input type="text" placeholder="Add Item" ng-model="todo.name" />
+    <input class="task-input" type="text" placeholder="Add Item" ng-model="todo.name" />
     <br />
-    <button ng-show="action == 'Add'" class="btn btn-primary" ng-click="addItem()">Add Item</button>
+    <button ng-show="action == 'Add'" class="btn btn-primary add-button" ng-click="addMenuItem()">Add Item</button>
 </div>
 <br />
 
