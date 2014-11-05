@@ -19,7 +19,7 @@ public class TaskControllerTest extends NinjaFluentLeniumTest {
 
     @Before
     public void setUp() throws Exception {
-        goTo(getServerAddress() + "task/");
+        goTo(getServerAddress() + "task");
     }
 
     @Test

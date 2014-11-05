@@ -16,38 +16,33 @@
 
 package conf;
 
-
-import controllers.ApplicationController;
-import controllers.TaskController;
+import com.google.inject.Inject;
 import ninja.AssetsController;
 import ninja.Router;
 import ninja.application.ApplicationRoutes;
+import ninja.jaxy.JaxyRoutes;
+import ninja.utils.NinjaProperties;
 
 @SuppressWarnings("UnusedDeclaration")
 public class Routes implements ApplicationRoutes {
 
-    @Override
-    public void init(Router router) {  
-        
-        router.GET().route("/").with(ApplicationController.class, "index");
-        router.GET().route("/hello_world.json").with(ApplicationController.class, "helloWorldJson");
+    private NinjaProperties ninjaProperties;
 
-        router.GET().route("/task/").with(TaskController.class, "index");
-        router.GET().route("/task").with(TaskController.class, "index");
-        router.GET().route("/task/api").with(TaskController.class, "listTasks");
-        router.PUT().route("/task/api").with(TaskController.class, "saveTask");
-        router.DELETE().route("/task/api/{id}").with(TaskController.class, "deleteTask");
+    @Inject
+    public Routes(NinjaProperties ninjaProperties) {
+        this.ninjaProperties = ninjaProperties;
+    }
+
+    @Override
+    public void init(Router router) {
+        JaxyRoutes routes = new JaxyRoutes(ninjaProperties);
+        routes.init(router);
 
         ///////////////////////////////////////////////////////////////////////
         // Assets (pictures / javascript)
         ///////////////////////////////////////////////////////////////////////
         router.GET().route("/assets/webjars/{fileName: .*}").with(AssetsController.class, "serveWebJars");
         router.GET().route("/assets/{fileName: .*}").with(AssetsController.class, "serveStatic");
-        
-        ///////////////////////////////////////////////////////////////////////
-        // Index / Catchall shows index page
-        ///////////////////////////////////////////////////////////////////////
-        router.GET().route("/.*").with(ApplicationController.class, "index");
     }
 
 }
