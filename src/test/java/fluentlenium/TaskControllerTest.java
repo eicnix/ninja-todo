@@ -38,8 +38,15 @@ public class TaskControllerTest extends NinjaFluentLeniumTest {
     public void deleteTask() throws Exception {
         addTaskOnSite("Test");
         click(".delete-button");
-        Thread.sleep(2000);
         await().atMost(5, TimeUnit.SECONDS).until("tr").hasSize(0);
+    }
+
+    @Test
+    public void markTaskAsDone() throws Exception {
+        addTaskOnSite("Test");
+        click("td b");
+        await().atMost(5, TimeUnit.SECONDS).until("td").hasAttribute("class", "strike");
+
     }
 
     @Override

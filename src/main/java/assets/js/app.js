@@ -35,8 +35,8 @@ var TodoCtrl = function ($scope, Todo) {
 
         todo.complete = todo.complete === false;
         $('#item_' + todo.id).toggleClass('strike');
-        Todo.update({id: todo.id}, todo, function () {
-            updateByAttr($scope.Todos, 'id', todo.id, todo)
+        Todo.update(todo, function (data) {
+            updateByAttr($scope.Todos, 'id', todo.id, data)
         });
     };
     $scope.deleteItem = function () {
@@ -55,7 +55,7 @@ var TodoCtrl = function ($scope, Todo) {
         var i = arr.length;
         while (i--) {
             if (arr[i] && arr[i][attr1] && (arguments.length > 2 && arr[i][attr1] === value1)) {
-                arr[1] = newRecord;
+                arr[i] = newRecord;
             }
         }
         return arr;
